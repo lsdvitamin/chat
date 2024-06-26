@@ -4,6 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Server {
     private int port;
@@ -36,9 +37,32 @@ public class Server {
         broadcastMessage("Из чата вышел: " + clientHandler.getUsername());
     }
 
+
+    public synchronized void privateMessage(String username, String message, ClientHandler sender) {
+        String[] privatMessages = message.split(" ");
+        String targetUser = privatMessages[1];
+        String privatMessage = privatMessages[2];
+        ClientHandler user = searchByUser(targetUser);
+        if (Objects.isNull(user)) {
+            sender.sendMessage("Пользователь " + targetUser + " не найден");
+        } else {
+            user.sendMessage(privatMessage);
+        }
+    }
+
     public synchronized void broadcastMessage(String message) {
         for (ClientHandler c : clients) {
             c.sendMessage(message);
         }
     }
+
+    public ClientHandler searchByUser(String user) {
+        for (ClientHandler c : clients) {
+            if (c.getUsername().equals(user)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
 }
