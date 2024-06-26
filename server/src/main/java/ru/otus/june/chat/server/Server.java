@@ -46,7 +46,7 @@ public class Server {
         if (Objects.isNull(user)) {
             sender.sendMessage("Пользователь " + targetUser + " не найден");
         } else {
-            user.sendMessage(privatMessage);
+            user.sendMessage(username + ": " + privatMessage);
         }
     }
 
