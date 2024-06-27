@@ -35,7 +35,10 @@ public class ClientHandler {
                         if (message.equals("/exit")) {
                             sendMessage("/exitok");
                             break;
+                        } else if (message.startsWith("/w ")){
+                            server.privateMessage(username, message, this);
                         }
+
                         continue;
                     }
                     server.broadcastMessage(username + ": " + message);
