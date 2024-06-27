@@ -40,13 +40,17 @@ public class Server {
 
     public synchronized void privateMessage(String username, String message, ClientHandler sender) {
         String[] privatMessages = message.split(" ");
-        String targetUser = privatMessages[1];
-        String privatMessage = privatMessages[2];
-        ClientHandler user = searchByUser(targetUser);
-        if (Objects.isNull(user)) {
-            sender.sendMessage("Пользователь " + targetUser + " не найден");
+        if (privatMessages.length == 3) {
+            String targetUser = privatMessages[1];
+            String privatMessage = privatMessages[2];
+            ClientHandler user = searchByUser(targetUser);
+            if (Objects.isNull(user)) {
+                sender.sendMessage("Пользователь " + targetUser + " не найден");
+            } else {
+                user.sendMessage(username + ": " + privatMessage);
+            }
         } else {
-            user.sendMessage(username + ": " + privatMessage);
+            sender.sendMessage("Неверный формат команды /w");
         }
     }
 
